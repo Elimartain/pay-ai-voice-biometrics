@@ -2,7 +2,12 @@
 
 Standalone voice biometric system that enrolls users, learns voice embeddings over time, and verifies speakers through a REST API you can plug into any app.
 
-![Pay AI voice biometrics](docs/images/app-screenshot.png)
+![Pay AI voice biometrics]
+<img width="785" height="613" alt="image" src="https://github.com/user-attachments/assets/b9cdf21f-caf6-472e-b959-23f0c4a4a659" />
+<img width="960" height="322" alt="image" src="https://github.com/user-attachments/assets/f5372b93-ed3c-43d5-be4d-191f607a5561" />
+<img width="960" height="347" alt="image" src="https://github.com/user-attachments/assets/51604005-ed7e-423c-9df4-14d2fd73425b" />
+<img width="844" height="302" alt="image" src="https://github.com/user-attachments/assets/c64c8916-92d2-4f09-902a-9fd8fb0cba8e" />
+
 
 Two-layer verification: **ECAPA-TDNN** speaker matching plus optional **Whisper** passphrase challenges, with encrypted templates, rate limits, liveness checks, and adaptive ML scoring.
 
