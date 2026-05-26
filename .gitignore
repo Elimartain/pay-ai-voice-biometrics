@@ -1,0 +1,50 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment and secrets (never commit)
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Cursor / IDE
+.cursor/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temp audio
+*.log
+/tmp/
+temp_audio/
+*.tmp
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model/runtime caches downloaded at runtime (optional local drops stay untracked if large)
+# Uncomment if you store heavy weights inside the repo:
+# pretrained_models/

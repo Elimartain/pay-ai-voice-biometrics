@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay AI — Voice Biometrics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .recording-indicator {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .recording-indicator.active {
+            display: block;
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+
+        .status.info {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
+
+        .recordings-list {
+            margin-top: 20px;
+        }
+
+        .recording-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .wave-container {
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .wave-bars {
+            display: flex;
+            align-items: end;
+            height: 40px;
+            gap: 2px;
+        }
+
+        .wave-bar {
+            width: 3px;
+            background: linear-gradient(to top, #4CAF50, #81C784);
+            border-radius: 1px;
+            height: 4px;
+            transition: height 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Pay AI — Voice biometric ML</h1>
+            <p>Learn and verify voices with adaptive ML • Reference UI for the standalone API</p>
+        </div>
+
+        <!-- User ID Input -->
+        <div class="input-group">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" placeholder="Enter your user ID (e.g., user123)" value="testuser">
+        </div>
+
+        <!-- Enrollment Section -->
+        <div class="section">
+            <h2>🔐 Voice Enrollment</h2>
+            <p style="text-align: center; margin-bottom: 20px; opacity: 0.9;">
+                Record 2-3 voice samples to enroll your voice profile
+            </p>
+            
+            <div class="recording-indicator" id="enrollIndicator">
+                <div class="pulse"></div>
+                <span>Recording... Speak naturally for 3-5 seconds</span>
+            </div>
+
+            <div class="wave-container" id="enrollWave" style="display: none;">
+                <div class="wave-bars" id="enrollWaveBars"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="startEnrollBtn">🎤 Start Recording</button>
+                <button class="btn btn-danger" id="stopEnrollBtn" disabled>⏹️ Stop Recording</button>
+                <button class="btn btn-secondary" id="submitEnrollBtn" disabled>📤 Submit Enrollment</button>
+            </div>
+
+            <div class="recordings-list" id="enrollRecordings">
+                <p style="text-align: center; opacity: 0.7;">No recordings yet</p>
+            </div>
+        </div>
+
+        <!-- Verification Section -->
+        <div class="section">
+            <h2>✅ Voice Verification</h2>
+            <p style="text-align: center; margin-bottom: 20px; opacity: 0.9;">
+                Verify your identity with a voice sample
+            </p>
+
+            <div class="recording-indicator" id="verifyIndicator">
+                <div class="pulse"></div>
+                <span>Recording... Speak naturally</span>
+            </div>
+
+            <div class="wave-container" id="verifyWave" style="display: none;">
+                <div class="wave-bars" id="verifyWaveBars"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="startVerifyBtn">🎤 Record Verification</button>
+                <button class="btn btn-danger" id="stopVerifyBtn" disabled>⏹️ Stop Recording</button>
+                <button class="btn btn-secondary" id="submitVerifyBtn" disabled>🔍 Verify Identity</button>
+            </div>
+
+            <div id="passphraseChallenge" style="display: none;">
+                <div class="status info">
+                    <h3>🔐 Passphrase Challenge Required</h3>
+                    <p>Please record yourself saying these words:</p>
+                    <div id="challengeWords" style="font-size: 1.5rem; margin: 20px 0; font-weight: bold;"></div>
+                    <div class="controls">
+                        <button class="btn btn-primary" id="startPassphraseBtn">🎤 Record Passphrase</button>
+                        <button class="btn btn-danger" id="stopPassphraseBtn" disabled>⏹️ Stop Recording</button>
+                        <button class="btn btn-secondary" id="submitPassphraseBtn" disabled>✅ Submit Passphrase</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Display -->
+        <div id="statusDisplay"></div>
+
+        <!-- Progress -->
+        <div class="progress" id="uploadProgress" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <script src="/static/voice-auth.js"></script>
+</body>
+</html>

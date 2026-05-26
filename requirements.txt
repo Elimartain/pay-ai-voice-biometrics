@@ -1,0 +1,18 @@
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+speechbrain>=0.5.16
+torch>=2.0.0
+torchaudio>=2.0.0
+librosa>=0.10.0
+pydub>=0.25.1
+cryptography>=41.0.0
+openai-whisper>=20231117
+python-dotenv>=1.0.0
+python-multipart>=0.0.6
+numpy>=1.24.0
+requests>=2.28.0
+# Enterprise security dependencies
+pyjwt>=2.8.0
+scipy>=1.10.0
+# Optional: webrtcvad for better VAD (requires C++ compiler on Windows)
+# webrtcvad>=2.0.10
